@@ -21,9 +21,7 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (isResumePage) {
-    return <Resume />;
-  }
+  if (isResumePage) return <Resume />;
 
   return (
     <div className="app">
