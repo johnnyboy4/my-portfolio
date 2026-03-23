@@ -9,11 +9,12 @@ import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Resume from "./components/Resume";
+import Gallery from "./components/Gallery";
 import "./index.css";
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
-  const isResumePage = window.location.pathname === "/resume";
+  const path = window.location.pathname;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -21,7 +22,8 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (isResumePage) return <Resume />;
+  if (path === "/resume") return <Resume />;
+  if (path === "/gallery") return <Gallery />;
 
   return (
     <div className="app">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const links = ["About", "Skills", "Projects", "Testimonials", "Blog", "Contact"];
+const links = ["About", "Skills", "Projects", "Gallery", "Testimonials", "Blog", "Contact"];
 
 export default function Navbar({ scrolled }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +11,9 @@ export default function Navbar({ scrolled }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Gallery is a separate page, all others are anchor links
+  const getHref = (link) => link === "Gallery" ? "/gallery" : `#${link.toLowerCase()}`;
 
   return (
     <>
@@ -24,17 +27,19 @@ export default function Navbar({ scrolled }) {
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px clamp(16px,5vw,24px)" }}>
 
           {/* Logo */}
-          <a href="#" style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "clamp(18px,3vw,22px)", color: "#fff", textDecoration: "none" }}>
+          <a href="/" style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "clamp(18px,3vw,22px)", color: "#fff", textDecoration: "none" }}>
             JB<span style={{ color: "var(--cyan)" }}>.</span>
           </a>
 
           {/* Desktop Links */}
           {!isMobile && (
-            <div style={{ display: "flex", gap: "clamp(16px,3vw,36px)" }}>
+            <div style={{ display: "flex", gap: "clamp(12px,2vw,28px)" }}>
               {links.map(link => (
-                <a key={link} href={`#${link.toLowerCase()}`} style={{ fontFamily: "'DM Sans'", fontSize: "14px", color: "var(--text-dim)", textDecoration: "none", transition: "color 0.3s" }}
+                <a key={link}
+                  href={getHref(link)}
+                  style={{ fontFamily: "'DM Sans'", fontSize: "13px", color: link === "Gallery" ? "var(--cyan)" : "var(--text-dim)", textDecoration: "none", transition: "color 0.3s" }}
                   onMouseEnter={e => e.target.style.color = "var(--cyan)"}
-                  onMouseLeave={e => e.target.style.color = "var(--text-dim)"}
+                  onMouseLeave={e => e.target.style.color = link === "Gallery" ? "var(--cyan)" : "var(--text-dim)"}
                 >{link}</a>
               ))}
             </div>
@@ -66,16 +71,18 @@ export default function Navbar({ scrolled }) {
             display: "flex", flexDirection: "column", gap: "4px",
           }}>
             {links.map(link => (
-              <a key={link} href={`#${link.toLowerCase()}`}
+              <a key={link}
+                href={getHref(link)}
                 onClick={() => setMenuOpen(false)}
                 style={{
-                  fontFamily: "'DM Sans'", fontSize: "16px", color: "var(--text)",
+                  fontFamily: "'DM Sans'", fontSize: "16px",
+                  color: link === "Gallery" ? "var(--cyan)" : "var(--text)",
                   textDecoration: "none", padding: "12px 0",
                   borderBottom: "1px solid rgba(0,229,255,0.05)",
                   transition: "color 0.3s",
                 }}
                 onMouseEnter={e => e.target.style.color = "var(--cyan)"}
-                onMouseLeave={e => e.target.style.color = "var(--text)"}
+                onMouseLeave={e => e.target.style.color = link === "Gallery" ? "var(--cyan)" : "var(--text)"}
               >{link}</a>
             ))}
             <a href="/resume" className="btn-primary" style={{ marginTop: "16px", justifyContent: "center" }}>Resume ↓</a>
